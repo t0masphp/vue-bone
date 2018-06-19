@@ -4,15 +4,18 @@ const webpack = require('webpack');
 const {VueLoaderPlugin} = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin  = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
+  output: {
+    path: resolve('docs')
+  },
   devServer: {
     hot: true,
     watchOptions: {
@@ -28,6 +31,10 @@ module.exports = {
       },
       {
         test: /\.js$/,
+        include: [ // use `include` vs `exclude` to white-list vs black-list
+          resolve('src'), // white-list your app source files
+          require.resolve('bootstrap-vue'), // white-list bootstrap-vue
+        ],
         use: 'babel-loader'
       },
       {
